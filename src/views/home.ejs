@@ -1,19 +1,16 @@
-
-    <%- include('partials/header') %>
-    <main>
-      <h1><%= title %></h1>
-      <h2>Welcome to the CSE 340 Service Network!</h2>
-      <p>
+<%- include('partials/header') %>
+<main class="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
+  <h1 class="mb-6 text-3xl font-bold text-teal-900 sm:text-4xl"><%= title %></h1>
+  <section class="grid items-center gap-8 rounded-xl bg-white p-6 shadow-sm md:grid-cols-2">
+    <div>
+      <h2 class="mb-3 text-2xl font-semibold text-slate-900">Welcome to the CSE 340 Service Network!</h2>
+      <p class="text-lg leading-relaxed text-slate-700">
         Our mission is to promote service across the world by connecting
         volunteers with service opportunities in their community.
       </p>
-
-      <img
-        class="main-logo"
-        src="images/cse340-service-network.png"
-        alt="CSE 340 Service Network Logo"
-      />
-    </main>
-    <%- include('partials/footer') %>
-  </body>
-</html>
+      <a href="/projects" class="mt-6 inline-block rounded-lg bg-teal-700 px-5 py-3 font-semibold text-white hover:bg-teal-800">View Projects</a>
+    </div>
+    <img class="mx-auto w-full max-w-sm" src="/images/cse340-service-network.png" alt="CSE 340 Service Network Logo">
+  </section>
+</main>
+<%- include('partials/footer') %>

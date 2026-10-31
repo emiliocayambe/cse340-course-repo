@@ -1,27 +1,12 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <link rel="stylesheet" href="/css/main.css" />
-  </head>
-  <body>
-    <%- include('partials/header') %>
-    <main>
-      <h1><%= title %></h1>
-      <h2>Welcome to the CSE 340 Service Network!</h2>
-      <p>
-        Our mission is to promote service across the world by connecting
-        volunteers with service opportunities in their community.
-      </p>
-
-      <img
-        class="main-logo"
-        src="images/cse340-service-network.png"
-        alt="CSE 340 Service Network Logo"
-      />
-    </main>
-    <%- include('partials/footer') %>
-  </body>
-</html>
+<%- include('partials/header') %>
+<main class="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
+  <h1 class="mb-2 text-3xl font-bold text-teal-900 sm:text-4xl"><%= title %></h1>
+  <p class="mb-8 text-lg text-slate-700">Browse service opportunities by category:</p>
+  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <li class="rounded-xl bg-white p-6 text-center font-semibold text-slate-900 shadow-sm">Environmental</li>
+    <li class="rounded-xl bg-white p-6 text-center font-semibold text-slate-900 shadow-sm">Education</li>
+    <li class="rounded-xl bg-white p-6 text-center font-semibold text-slate-900 shadow-sm">Hunger Relief</li>
+    <li class="rounded-xl bg-white p-6 text-center font-semibold text-slate-900 shadow-sm">Community Building</li>
+  </ul>
+</main>
+<%- include('partials/footer') %>

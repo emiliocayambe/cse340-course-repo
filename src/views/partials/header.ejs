@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/css/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> | CSE 340 Service Network</title>
+  <link rel="stylesheet" href="/css/main.css">
 </head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/organizations">Organizations</a></li>
-            <li><a href="/projects">Projects</a></li>
-            <li><a href="/categories">Categories</a></li>
-        </ul>
+<body class="flex min-h-screen flex-col bg-slate-50 font-sans text-slate-800 antialiased">
+  <header class="bg-teal-800 text-white shadow-md">
+    <nav class="mx-auto flex max-w-5xl flex-col items-center gap-3 px-4 py-4 sm:flex-row sm:justify-between" aria-label="Main navigation">
+      <a href="/" class="text-xl font-bold tracking-tight">CSE 340 Service Network</a>
+      <ul class="flex flex-wrap justify-center gap-1 sm:gap-2">
+        <li><a href="/" class="rounded-md px-3 py-2 font-medium hover:bg-teal-700 focus-visible:outline-2 focus-visible:outline-white">Home</a></li>
+        <li><a href="/organizations" class="rounded-md px-3 py-2 font-medium hover:bg-teal-700 focus-visible:outline-2 focus-visible:outline-white">Organizations</a></li>
+        <li><a href="/projects" class="rounded-md px-3 py-2 font-medium hover:bg-teal-700 focus-visible:outline-2 focus-visible:outline-white">Projects</a></li>
+        <li><a href="/categories" class="rounded-md px-3 py-2 font-medium hover:bg-teal-700 focus-visible:outline-2 focus-visible:outline-white">Categories</a></li>
+      </ul>
     </nav>
+  </header>
