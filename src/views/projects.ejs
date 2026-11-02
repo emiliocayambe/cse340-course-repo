@@ -3,18 +3,13 @@
   <h1 class="mb-2 text-3xl font-bold text-teal-900 sm:text-4xl"><%= title %></h1>
   <h2 class="mb-8 text-xl text-slate-700">Upcoming Service Projects</h2>
   <ul class="grid gap-6 md:grid-cols-3">
+
+  <% projects.forEach(project => { %>
     <li class="rounded-xl border-t-4 border-teal-700 bg-white p-6 shadow-sm">
-      <h3 class="mb-2 text-lg font-semibold text-slate-900">Park Cleanup</h3>
-      <p class="text-slate-700">Join us to clean up local parks and make them beautiful!</p>
+      <h3 class="mb-2 text-lg font-semibold text-slate-900"><%= project.title %></h3>
+      <p class="text-slate-700"><%= project.description %></p>
     </li>
-    <li class="rounded-xl border-t-4 border-teal-700 bg-white p-6 shadow-sm">
-      <h3 class="mb-2 text-lg font-semibold text-slate-900">Food Drive</h3>
-      <p class="text-slate-700">Help collect and distribute food to those in need.</p>
-    </li>
-    <li class="rounded-xl border-t-4 border-teal-700 bg-white p-6 shadow-sm">
-      <h3 class="mb-2 text-lg font-semibold text-slate-900">Community Tutoring</h3>
-      <p class="text-slate-700">Volunteer to tutor students in various subjects.</p>
-    </li>
+  <% }); %>
   </ul>
 </main>
 <%- include('partials/footer') %>

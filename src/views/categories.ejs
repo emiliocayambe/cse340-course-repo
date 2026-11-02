@@ -3,10 +3,9 @@
   <h1 class="mb-2 text-3xl font-bold text-teal-900 sm:text-4xl"><%= title %></h1>
   <p class="mb-8 text-lg text-slate-700">Browse service opportunities by category:</p>
   <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-    <li class="rounded-xl bg-white p-6 text-center font-semibold text-slate-900 shadow-sm">Environmental</li>
-    <li class="rounded-xl bg-white p-6 text-center font-semibold text-slate-900 shadow-sm">Education</li>
-    <li class="rounded-xl bg-white p-6 text-center font-semibold text-slate-900 shadow-sm">Hunger Relief</li>
-    <li class="rounded-xl bg-white p-6 text-center font-semibold text-slate-900 shadow-sm">Community Building</li>
+    <% categories.forEach(category => { %>
+    <li class="rounded-xl bg-white p-6 text-center font-semibold text-slate-900 shadow-sm"><%= category.name %></li>
+    <% }); %>
   </ul>
 </main>
 <%- include('partials/footer') %>

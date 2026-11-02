@@ -3,21 +3,17 @@
   <h1 class="mb-2 text-3xl font-bold text-teal-900 sm:text-4xl"><%= title %></h1>
   <p class="mb-8 text-lg text-slate-700">Here are a few of our partner organizations:</p>
   <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  
+    <% organizations.forEach(organization => { %>
+
     <li class="flex flex-col items-center rounded-xl bg-white p-6 text-center shadow-sm">
-      <img class="mb-4 h-24 w-auto object-contain" src="/images/brightfuture-logo.png" alt="BrightFuture Builders logo">
-      <strong class="text-lg text-slate-900">BrightFuture Builders</strong>
-      <a class="text-teal-700 underline hover:text-teal-900" href="mailto:info@brightfuture.org">info@brightfuture.org</a>
+      <img class="mb-4 h-24 w-auto object-contain" src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %>">
+      <strong class="text-lg text-slate-900"><%= organization.name %></strong>
+      <a class="text-teal-700 underline hover:text-teal-900" href="mailto:<%= organization.contact_email %>"><%= organization.contact_email %></a>
     </li>
-    <li class="flex flex-col items-center rounded-xl bg-white p-6 text-center shadow-sm">
-      <img class="mb-4 h-24 w-auto object-contain" src="/images/greenharvest-logo.png" alt="GreenHarvest Growers logo">
-      <strong class="text-lg text-slate-900">GreenHarvest Growers</strong>
-      <a class="text-teal-700 underline hover:text-teal-900" href="mailto:contact@greenharvest.org">contact@greenharvest.org</a>
-    </li>
-    <li class="flex flex-col items-center rounded-xl bg-white p-6 text-center shadow-sm">
-      <img class="mb-4 h-24 w-auto object-contain" src="/images/unityserve-logo.png" alt="UnityServe Volunteers logo">
-      <strong class="text-lg text-slate-900">UnityServe Volunteers</strong>
-      <a class="text-teal-700 underline hover:text-teal-900" href="mailto:hello@unityserve.org">hello@unityserve.org</a>
-    </li>
+
+    <% }); %>
+
   </ul>
 </main>
 <%- include('partials/footer') %>
