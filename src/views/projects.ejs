@@ -10,6 +10,10 @@
           <%= project.title %>
         </a></h3>
       <p class="text-slate-700"><%= project.description %></p>
+      <p class="text-sm text-slate-600">
+  <%= new Date(project.date).toLocaleDateString() %> ·
+  <a class="text-teal-700 underline hover:text-teal-900" href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>
+</p>
     </li>
   <% }); %>
   </ul>

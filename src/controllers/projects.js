@@ -2,7 +2,7 @@ import { getAllProjects, getProjectDetails } from "../models/projects.js";
 import { getCategoriesByProjectId } from "../models/categories.js";
 
 const showProjectsPage = async (req, res) => {
-  const projects = await getAllProjects();
+  const projects = await getAllProjects(5);
   const title = "Service Projects";
   res.render("projects", { title, projects });
 };

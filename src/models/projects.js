@@ -1,18 +1,22 @@
 import db from "./db.js";
 
-const getAllProjects = async () => {
+const getAllProjects = async (numberOfProjects) => {
   const query = `
-        SELECT
-          project_id,
-          title,
-          description
-        FROM
-          public.service_project
-        LIMIT 5 ;
-    `;
-
-  const result = await db.query(query);
-
+    SELECT
+      p.project_id,
+      p.title,
+      p.description,
+      p.date,
+      p.location,
+      p.organization_id,
+      o.name AS organization_name
+    FROM public.service_project AS p
+    JOIN public.organization AS o ON p.organization_id = o.organization_id
+    WHERE p.date >= CURRENT_DATE
+    ORDER BY p.date
+    LIMIT $1;
+  `;
+  const result = await db.query(query, [numberOfProjects]);
   return result.rows;
 };
 
