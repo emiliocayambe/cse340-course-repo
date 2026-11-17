@@ -1,0 +1,182 @@
+Week 01 Coaching Session — Emilio
+Transcript of coaching conversation
+
+NOTE: This transcript reproduces the conversation's substantive text and code in chronological order. Markdown formatting has been simplified, and HTML entity encoding has been normalized for readability.
+
+ASSISTANT:
+Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say 'I don't know' or 'I made a mistake.' That's the fastest way we'll learn today.
+
+I'll be your Learning Coach and Software Mentor throughout this Week 01 session.
+We'll work together in a supportive environment where you can explain your code, discuss your decisions, and ask for clarification whenever you need it.
+We'll cover Express Routing, JavaScript Language Principles, EJS Partials and Pages, and Frontend CSS. For each topic, we'll look at code from your project and discuss how it works and why you chose that approach. At the end, I'll prepare a downloadable .txt transcript of our conversation.
+First question: What name would you like me to use during our coaching session?
+
+USER:
+Emilio
+
+ASSISTANT:
+Nice to meet you, Emilio! Let's begin with Topic 1: Express Routing. We'll explore how Express handles HTTP requests, how routes connect URLs to server functions, and why you structured your code the way you did. Remember, this is a learning conversation, not a test.
+Question 1 — Express Routing: Could you paste a relevant code snippet from your server.js file showing how you defined an Express route, such as app.get() or app.post()?
+
+USER:
+of course, for example:
+app.get("/", async (req, res) => {
+  const title = "Home";
+  res.render("home", { title });
+});
+
+in this function we have an async function an 2 params, request and response inside de function i have a constant title and I send this constant to render in "home" page.
+
+ASSISTANT:
+Great explanation, Emilio! You're correctly identifying the main parts of your Express route.
+app.get("/", async (req, res) => {
+  const title = "Home";
+  res.render("home", { title });
+});
+app.get("/") defines a GET route at the root URL; req is the incoming request; res is the response; title is a constant; res.render("home", { title }) renders the home EJS template and passes title. One important detail: async is not necessary here because the function contains no await. It can be useful for database operations.
+Question 2: Why did you choose to use async in this route, even though you're not using await inside the function?
+
+USER:
+I think becouse we need await to load the params and render.
+
+ASSISTANT:
+Good thinking, Emilio! You're connecting async and await with waiting for something to finish. In your route, const title = "Home" executes synchronously and res.render() doesn't require await. You could write:
+app.get("/", (req, res) => {
+  const title = "Home";
+  res.render("home", { title });
+});
+Question 3: Imagine you need to retrieve a list of products from a database before displaying your home page. How would you use async and await in your Express route to make sure the products are retrieved before rendering the page?
+
+USER:
+I would put an await in the constant if I need it for example const title = await "anything"
+
+ASSISTANT:
+You're on the right track, Emilio! await can be used when assigning a value to a constant. const title = await "anything" is valid inside an async function, but await is useful for waiting for a Promise; a plain string doesn't require waiting. For example:
+app.get("/products", async (req, res) => {
+  const products = await getAllProducts();
+  res.render("products", { products });
+});
+Assuming getAllProducts returns a Promise, await waits for it to resolve before rendering.
+Question 4: What do you think would happen if we removed await from getAllProducts() but still passed products to res.render()?
+
+USER:
+I think not all products there are ready to render.
+
+ASSISTANT:
+Exactly, Emilio! Without await, if getAllProducts() returns a Promise, products contains that Promise rather than the product data. EJS may have trouble displaying it. With const products = await getAllProducts(), JavaScript waits for the Promise to resolve. You've explored Express Routing.
+Topic 2 — JavaScript Language Principles. Could you paste a JavaScript function from your Week 01 project that you wrote yourself?
+
+USER:
+app.listen(PORT, () => {
+  console.log(`Server is running at http://127.0.0.1:${PORT}`);
+  console.log(`Environment: ${NODE_ENV}`);
+});
+
+ASSISTANT:
+Great example, Emilio! app.listen(PORT, ...) starts the server listening on the specified port; () => { ... } is an arrow function callback that runs when the server starts listening; console.log prints to the terminal; template literals insert variable values.
+Question 6: Why do you think we pass an arrow function () => { ... } as an argument to app.listen() instead of simply writing console.log() statements after app.listen()?
+
+USER:
+I think if we dont use an arrow function, javaScript run al code lines whitout know yif the port is ready or not
+
+ASSISTANT:
+Exactly, Emilio! The callback runs when the server is ready to accept connections. Without a callback, a console.log immediately after app.listen() can execute before the server is ready. Callbacks allow us to respond to events at the appropriate time.
+Question 7: Why did you choose to use backticks (`) and ${NODE_ENV} instead of writing a regular string with quotation marks?
+
+USER:
+because I need render the value of NODE_ENV
+
+ASSISTANT:
+Exactly, Emilio! Template literals allow string interpolation. For example:
+const NODE_ENV = "development";
+console.log(`Environment: ${NODE_ENV}`);
+Output: Environment: development
+Regular quotation marks around "Environment: ${NODE_ENV}" would print the placeholder literally.
+Topic 3 — EJS Partials and Pages. Could you paste a relevant EJS code snippet from your project, preferably one showing a partial such as a header or footer?
+
+USER:
+of course, this is my footer.ejs:
+<footer class="mt-auto bg-slate-900 py-6 text-center text-sm text-slate-300">
+  <p>&copy; <%= new Date().getFullYear() %> CSE 340 Service Network. All rights reserved.</p>
+</footer>
+</body>
+</html>
+
+ASSISTANT:
+Great example, Emilio! HTML <p> creates a paragraph, &copy; shows the copyright symbol, new Date().getFullYear() retrieves the current year, and <%= ... %> evaluates a JavaScript expression and outputs escaped content. Your footer also closes body and html.
+Question 9: Why did you decide to create a separate footer.ejs partial instead of writing the same footer HTML directly inside every EJS page?
+
+USER:
+bucause this code lines are the same in all pages.
+
+ASSISTANT:
+Exactly, Emilio! Partials promote code reusability and the DRY principle. You can change the footer once and every page including it updates.
+Question 10: Could you paste the part of your home.ejs (or another EJS page) where you include your footer partial?
+
+USER:
+<%- include('partials/header') %>
+<main class="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
+  <h1 class="mb-6 text-3xl font-bold text-teal-900 sm:text-4xl"><%= title %></h1>
+  <section class="grid items-center gap-8 rounded-xl bg-white p-6 shadow-sm md:grid-cols-2">
+    <div>
+      <h2 class="mb-3 text-2xl font-semibold text-slate-900">Welcome to the CSE 340 Service Network!</h2>
+      <p class="text-lg leading-relaxed text-slate-700">
+        Our mission is to promote service across the world by connecting
+        volunteers with service opportunities in their community.
+      </p>
+      <a href="/projects" class="mt-6 inline-block rounded-lg bg-teal-700 px-5 py-3 font-semibold text-white hover:bg-teal-800">View Projects</a>
+    </div>
+    <img class="mx-auto w-full max-w-sm" src="/images/cse340-service-network.png" alt="CSE 340 Service Network Logo">
+  </section>
+</main>
+<%- include('partials/footer') %>
+
+ASSISTANT:
+Excellent, Emilio! Your page includes a reusable header, displays title via <%= title %>, has page-specific main content, and includes the footer. <%= ... %> escapes output, while <%- ... %> outputs unescaped trusted HTML, useful for partials.
+Question 11: Can you explain how the title variable travels from your Express route to the <h1> element in your EJS page?
+
+USER:
+of course, when I render:
+res.render("home", { title });
+I can use this constant in my home.ejs with the correct value
+
+ASSISTANT:
+Exactly, Emilio! Express passes title as a local variable to home.ejs, where <h1><%= title %></h1> displays it.
+Topic 4 — Frontend CSS. I noticed Tailwind CSS utility classes such as mx-auto and py-10 in your main element.
+Question 12: Could you paste a non-trivial CSS snippet from your project, such as a stylesheet rule or HTML with several Tailwind classes?
+
+USER:
+<details class="group sm:hidden">
+  <summary class="cursor-pointer list-none rounded-md p-2 hover:bg-teal-700 [&::-webkit-details-marker]:hidden" aria-label="Toggle menu">
+    <svg class="h-6 w-6 group-open:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    <svg class="hidden h-6 w-6 group-open:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </summary>
+  <ul class="absolute left-0 right-0 mt-4 flex flex-col bg-teal-800 px-4 pb-4 shadow-md">
+    <li><a href="/" class="block rounded-md px-3 py-2 hover:bg-teal-700">Home</a></li>
+    <li><a href="/organizations" class="block rounded-md px-3 py-2 hover:bg-teal-700">Organizations</a></li>
+    <li><a href="/projects" class="block rounded-md px-3 py-2 hover:bg-teal-700">Projects</a></li>
+    <li><a href="/categories" class="block rounded-md px-3 py-2 hover:bg-teal-700">Categories</a></li>
+  </ul>
+</details>
+
+ASSISTANT:
+Excellent example, Emilio! This is responsive design with Tailwind CSS. group allows descendants to respond to the parent's state; sm:hidden hides the mobile menu at 640px and above under default Tailwind breakpoints; details handles expanding/collapsing; hover:bg-teal-700 changes hover background; group-open:hidden hides the hamburger icon when open; group-open:block displays the X icon; flex flex-col stacks links vertically.
+Question 13: Why did you choose to use sm:hidden for this navigation menu instead of displaying the same menu on every screen size?
+
+USER:
+because this is for the mobile menu... not all buttons are aviable in the burguer menu
+
+ASSISTANT:
+Exactly, Emilio! Responsive navigation conserves space on small screens. sm:hidden hides the menu at the sm breakpoint and above; a separate horizontal menu can appear on larger screens.
+Question 14: Can you explain what happens to these two SVG icons when a user opens the hamburger menu?
+<svg class="h-6 w-6 group-open:hidden">
+<svg class="hidden h-6 w-6 group-open:block">
+
+USER:
+when user open the burguer menu it's change to X and if user touch X it's change to the burguer menu
+
+ASSISTANT:
+Exactly, Emilio! When the user opens the mobile navigation menu, the hamburger icon disappears and the X icon appears. When the user closes the menu, the hamburger icon returns. group-open:hidden hides the hamburger icon when details is open, group-open:block shows the X icon, and the HTML details element handles toggling without additional JavaScript.
+Week 01 Coaching Session — Completed! All four topics covered: Express Routing, JavaScript Principles, EJS Partials and Pages, and Frontend CSS. A key concept to keep practicing is when to use async and await with Promises. There is no pass or fail; the purpose was learning through discussion.
+
+END OF TRANSCRIPT

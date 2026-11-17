@@ -4,7 +4,7 @@
   <p class="mb-8 text-lg text-slate-700">Browse service opportunities by category:</p>
   <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
     <% categories.forEach(category => { %>
-    <li class="rounded-xl bg-white p-6 text-center font-semibold text-slate-900 shadow-sm"><%= category.name %></li>
+    <li class="rounded-xl bg-white p-6 text-center font-semibold text-slate-900 shadow-sm"><a href="/category/<%= category.category_id %>"><%= category.name %></a></li>
     <% }); %>
   </ul>
 </main>

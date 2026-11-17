@@ -2,9 +2,13 @@ import db from "./db.js";
 
 const getAllProjects = async () => {
   const query = `
-        SELECT title, description
-      FROM public.service_project
-      LIMIT 5 ;
+        SELECT
+          project_id,
+          title,
+          description
+        FROM
+          public.service_project
+        LIMIT 5 ;
     `;
 
   const result = await db.query(query);
@@ -51,4 +55,22 @@ const getProjectDetails = async (projectId) => {
 
   return result.rows.length > 0 ? result.rows[0] : null;
 };
-export { getAllProjects, getProjectsByOrganizationId, getProjectDetails };
+
+const getProjectsByCategoryId = async (categoryId) => {
+  const query = `
+    SELECT p.project_id, p.title, p.description
+    FROM public.service_project AS p
+    JOIN public.project_category AS pc ON p.project_id = pc.project_id
+    WHERE pc.category_id = $1
+    ORDER BY p.date;
+  `;
+  const result = await db.query(query, [categoryId]);
+  return result.rows;
+};
+
+export {
+  getAllProjects,
+  getProjectsByOrganizationId,
+  getProjectDetails,
+  getProjectsByCategoryId,
+};

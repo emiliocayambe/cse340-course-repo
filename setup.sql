@@ -110,7 +110,7 @@ VALUES
     (2, 1),         -- Project 2: Environmental
     (3, 3),         -- Project 3: Education & Training
     (4, 1),         -- Project 4: Environmental
-    (5, 2),         (5, 3), -- Project 5: Community Development & Education
+    (5, 2), (5, 3), -- Project 5: Community Development & Education
     
     -- GreenHarvest Growers projects (IDs 6-10)
     (6, 1), (6, 3), -- Project 6: Environmental & Education

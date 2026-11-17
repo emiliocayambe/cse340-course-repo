@@ -1,0 +1,367 @@
+Week 02 Coaching Session — Emilio
+Transcript
+
+Note: This transcript preserves the substantive conversation in chronological order. Formatting and HTML-escaped characters in pasted code have been normalized for readability.
+
+ASSISTANT:
+Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say 'I don't know' or 'I made a mistake.' That's the fastest way we'll learn today.
+
+I'll be your Learning Coach and Software Mentor for your Week 02 assignment.
+
+This is a safe, supportive learning space. We'll explore your code, discuss your decisions, and work through anything that feels confusing. There are no grades or pass/fail judgments here.
+
+During our conversation, we'll cover four topics: relational database design and SQL, Node.js database access, Express routing, and EJS templates. We'll look at actual code snippets you paste into the chat and discuss how and why they work.
+
+At the end, I'll prepare a downloadable .txt transcript of our coaching session.
+
+Let's get started! My first question: What name would you like me to use during our coaching session?
+
+USER:
+Emilio
+
+ASSISTANT:
+Nice to meet you, Emilio! 😊
+
+I'm happy to be your learning coach for this Week 02 session.
+
+Remember, this is a conversation, not a test. You can share your ideas, ask questions, or tell me when something is confusing.
+
+Topic 1: Relational Database Design and Structure
+We'll start by exploring how you organized your database and how your tables work together.
+
+My question: Could you tell me what your Week 02 project is about and what tables you created in your database?
+
+USER:
+Of course. This week I implemented the service projects and categories tables. Since a project can have multiple categories and a category can have multiple projects, I created a junction table to handle the many-to-many relationship between them.
+
+ASSISTANT:
+Great explanation, Emilio! 😊
+
+You've identified an important concept in relational database design: many-to-many relationships.
+
+Your database has three main tables:
+- service_projects: Stores information about individual service projects.
+- categories: Stores the different categories available.
+- Junction table: Connects projects to categories, allowing each project to belong to multiple categories and each category to contain multiple projects.
+
+Using a junction table is a common and effective approach because it avoids duplicating project or category information.
+
+Let's explore your SQL code.
+I'd like to see how you implemented this relationship in your actual database.
+
+My question: Could you paste the SQL code you wrote to create your junction table, including its foreign keys, so we can discuss how it connects your projects and categories?
+
+USER:
+CREATE TABLE IF NOT EXISTS public.project_category (
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+    CONSTRAINT project_category_pkey PRIMARY KEY (project_id, category_id),
+    CONSTRAINT fk_project FOREIGN KEY (project_id)
+        REFERENCES public.service_project (project_id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_category FOREIGN KEY (category_id)
+        REFERENCES public.category (category_id)
+        ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+ASSISTANT:
+Excellent work, Emilio! 😊
+
+Your SQL demonstrates a solid understanding of relational database design. Let's look at two important decisions you made.
+
+1. Composite Primary Key
+PRIMARY KEY (project_id, category_id)
+This ensures that the same project-category combination cannot appear twice in your junction table.
+For example, project 5 can belong to categories 2 and 3, but you cannot insert the combination (5, 2) twice.
+
+2. Foreign Keys with CASCADE
+ON UPDATE CASCADE ON DELETE CASCADE
+These constraints maintain referential integrity.
+- ON UPDATE CASCADE updates the matching foreign key values if a referenced ID changes.
+- ON DELETE CASCADE automatically removes related records from project_category when a referenced project or category is deleted.
+This helps prevent orphaned relationships in your database.
+
+Let's explore your design decision.
+My question: Why did you choose to use ON DELETE CASCADE instead of manually deleting records from the project_category table when a project is removed?
+Feel free to explain in your own words. There's no need for a perfect technical answer!
+
+USER:
+I chose `ON DELETE CASCADE` because it automatically handles cleaning up related records in the junction table when a project is deleted. It saves me from having to write extra manual queries and prevents orphan records, making the code cleaner and less prone to errors.
+
+ASSISTANT:
+That's a well-reasoned decision, Emilio! 😊
+
+You've explained both the practical benefit (fewer manual queries) and the database integrity benefit (preventing orphaned relationships).
+
+One important detail is that ON DELETE CASCADE removes the corresponding records from project_category, but it does not delete the categories themselves when a project is deleted. This is exactly what you want for a many-to-many relationship.
+
+Topic 1: SQL Queries
+Now that we've discussed your table structure and relationships, let's explore how you retrieve information from your database.
+For example, you might need to retrieve all the categories associated with a particular service project.
+
+My question: Could you paste one SQL SELECT query from your assignment that uses a JOIN to retrieve information from your related tables?
+We'll explore what the query does and why you chose that approach.
+
+USER:
+Actually, in my Node.js application code right now, I haven't implemented a `JOIN` query yet—I'm querying the tables separately. However, I know how `JOIN` works to combine data from related tables like `service_project` and `organization` using their foreign keys when I need to display them together later.
+
+ASSISTANT:
+That's completely fine, Emilio! 😊
+I appreciate you explaining what you've implemented so far. Remember, this is a learning session, so you don't need to have every feature completed.
+Querying tables separately can work, especially when you're retrieving independent sets of data.
+However, SQL JOIN queries become useful when you need related information from multiple tables in a single result.
+
+For example, if you wanted to display each service project alongside its organization, you could use a query like this, assuming service_project contains an organization_id foreign key:
+SELECT sp.project_id, sp.project_name, o.organization_name
+FROM service_project sp
+JOIN organization o ON sp.organization_id = o.organization_id;
+
+This is just an illustrative example, not code from your assignment.
+
+Let's connect this to your implementation.
+Since you're currently querying tables separately, I'd like to understand your approach before we move to Node.js.
+
+My question: Could you paste one actual SQL SELECT query from your project and explain what information you're trying to retrieve with it?
+It doesn't need to contain a JOIN.
+
+USER:
+of course,
+const query = `
+        SELECT name
+      FROM public.category;
+    `;
+in this query I obtain all categories to list en show in my html.
+
+ASSISTANT:
+Great, Emilio! 😊
+Your query is simple and effective for what you're trying to accomplish.
+SELECT name FROM public.category;
+Here's what happens:
+1. SELECT name retrieves the name column.
+2. FROM public.category specifies the table containing the data.
+3. Since there's no WHERE clause, PostgreSQL returns the names of all categories.
+One useful detail: without an ORDER BY clause, the database doesn't guarantee the order of the results. If you want categories displayed alphabetically, you could use:
+SELECT name FROM public.category ORDER BY name ASC;
+
+Topic 2: Server-Side Data Access Logic (Node.js)
+Now let's explore how your Node.js application communicates with PostgreSQL.
+You've already shown me the SQL query that retrieves your categories. The next step is understanding how your application executes that query and receives the results.
+
+My question: Could you paste the Node.js function from your project that connects to the database and executes your category query?
+I'd like to explore how the data moves from PostgreSQL into your application.
+
+USER:
+this is my connection:
+const pool = new Pool({
+  connectionString: process.env.DB_URL || process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+/**
+ * Common SSL Issue:
+ * You may encounter SSL connection errors depending on your operating system, Node.js
+ * version, or PostgreSQL server settings. If you have confirmed your credentials are
+ * correct but still see SSL errors, try updating the 'ssl' property in the Pool
+ * configuration above to:
+ * ssl: { rejectUnauthorized: false }
+ */
+
+/**
+ * Since we will modify the normal pool object in development mode, we need to create and
+ * export a reference to the pool object. This allows us to use the same name for the
+ * export regardless of whether we are in development or production mode.
+ */
+let db = null;
+
+if (
+  process.env.NODE_ENV === "development" &&
+  process.env.ENABLE_SQL_LOGGING === "true"
+) {
+  /**
+   * In development mode, we wrap the pool to provide query logging.
+   * This helps with debugging by showing all executed queries in the console.
+   * The wrapper also adds timing information to help identify slow queries
+   * and tracks the number of rows affected by each query.
+   */
+  db = {
+    async query(text, params) {
+      try {
+        const start = Date.now();
+        const res = await pool.query(text, params);
+        const duration = Date.now() - start;
+        console.log("Executed query:", {
+          text: text.replace(/\s+/g, " ").trim(),
+          duration: `${duration}ms`,
+          rows: res.rowCount,
+        });
+        return res;
+      } catch (error) {
+        console.error("Error in query:", {
+          text: text.replace(/\s+/g, " ").trim(),
+          error: error.message,
+        });
+        throw error;
+      }
+    },
+    async close() {
+      await pool.end();
+    },
+  };
+} else {
+  // In production, export the pool directly without logging overhead
+  db = pool;
+}
+
+this is how my category make the query:
+const result = await db.query(query);
+
+ASSISTANT:
+Excellent, Emilio! 😊 You've shared an important part of your Node.js application. Your code shows how you manage database connections and execute SQL queries.
+
+What your code is doing:
+1. Creating a connection pool. You're using PostgreSQL Pool to manage database connections efficiently. Instead of creating a new connection for every query, the pool can reuse existing connections. Using environment variables also helps keep your database credentials out of your source code.
+One security consideration: rejectUnauthorized: false disables verification of the database server's TLS certificate. This can be useful in some development environments, but production connections should normally verify the certificate.
+2. Adding query logging in development. Your code checks NODE_ENV === "development" and ENABLE_SQL_LOGGING === "true". When both conditions are true, your wrapper records query execution time, row counts, and errors. That's useful for debugging and performance analysis.
+3. Executing your SQL query: const result = await db.query(query); This sends your SQL statement to PostgreSQL and waits for the result.
+For your category query, result.rows would contain an array of objects, such as [{ name: "Education" }, { name: "Health" }, { name: "Community" }]. These are example values, not necessarily your actual categories.
+
+Let's explore your understanding.
+My question: Why do you think using await db.query(query) is important when retrieving data from PostgreSQL, instead of calling db.query(query) without await?
+Explain it in your own words.
+
+USER:
+because I need all data before it render en my view html
+
+ASSISTANT:
+Exactly, Emilio! 😊 You've understood the main idea.
+Using await allows your application to wait for PostgreSQL to finish executing the query before continuing with the code that prepares your HTML view.
+For example:
+const result = await db.query(query);
+const categories = result.rows;
+res.render("categories", { categories });
+Here's the flow:
+1. PostgreSQL executes your SQL query.
+2. Node.js waits for the query result using await.
+3. result.rows contains the retrieved categories.
+4. Express passes the categories to the view for rendering.
+One important detail: await pauses the current asynchronous function, not the entire Node.js server. Other requests can still be processed.
+
+Topic 2: Understanding your data access function
+My question: Could you paste the complete Node.js function that retrieves your categories, including its async declaration, SQL query, and return statement?
+We'll use it to explore how your application separates database logic from the rest of the server.
+
+USER:
+import db from "./db.js";
+
+const getAllCategoires = async () => {
+  const query = `
+        SELECT name
+      FROM public.category;
+    `;
+
+  const result = await db.query(query);
+
+  return result.rows;
+};
+
+export { getAllCategoires };
+
+ASSISTANT:
+Excellent, Emilio! 😊 Now I can see how you've organized your database access logic.
+Your function demonstrates a useful software design principle: separation of concerns.
+
+What you've implemented well:
+- Reusability: Other parts of your application can import and call this function.
+- Separation of concerns: Your SQL logic stays separate from your Express route handlers.
+- Asynchronous programming: You use async/await to retrieve data before returning it.
+- Clean results: Returning result.rows gives the calling code the actual database records rather than the entire PostgreSQL response object.
+One small improvement: getAllCategoires has a spelling typo. You could rename it to getAllCategories, updating both its declaration and imports.
+
+Topic 3: Express Server Logic and Routing
+Now let's explore how your Express server connects an incoming HTTP request to this database function.
+For example, a user might visit a URL, Express matches that URL to a route, and the route handler retrieves the categories before rendering a page.
+
+My question: Could you paste the specific Express routing declaration from your main server file (app.js or server.js) that handles the page where your categories are displayed?
+
+USER:
+this is my router:
+app.get("/categories", async (req, res) => {
+  const categories = await getAllCategoires();
+  const title = "Categories";
+  res.render("categories", { title, categories });
+});
+
+ASSISTANT:
+Great job, Emilio! 😊 Your Express route connects the database logic to the page that users see.
+How your Express route works:
+1. app.get("/categories", ...) tells Express to handle HTTP GET requests to /categories.
+2. async (req, res) defines an asynchronous route handler.
+3. await getAllCategoires() retrieves the categories from PostgreSQL through your data access function.
+4. res.render("categories", { title, categories }) renders the categories view and makes the two variables available to the template.
+Your application now has a clear data flow:
+Browser GET /categories → Express route → Node.js data access → PostgreSQL → EJS template.
+One potential improvement for later is adding error handling so that a database failure doesn't leave the request without a proper response.
+
+Let's discuss your routing decision.
+My question: Why did you choose app.get("/categories", ...) instead of app.post("/categories", ...) for this route?
+
+USER:
+becouse post is for sencible data and not need to exposed
+
+ASSISTANT:
+Good thinking, Emilio! 😊 You're connecting HTTP methods with how data is sent and handled.
+There's one important distinction to clarify:
+- GET is primarily used to retrieve information from the server without changing data.
+- POST is primarily used to submit data for processing, often to create a new resource.
+POST is not automatically more secure than GET. Both methods should use HTTPS when transmitting sensitive information. POST typically sends data in the request body rather than the URL, but that doesn't make it secret.
+In your application, GET is the correct choice because you're retrieving categories to display on a webpage, not creating or modifying them.
+
+Topic 4: Client-Side Rendering with EJS Templates
+We've now discussed your database structure, Node.js data access, and Express routing. Let's explore the final step: how your categories appear in the browser.
+Your route uses: res.render("categories", { title, categories });
+This passes the retrieved data to your EJS template. EJS processes the template on the server and generates HTML that is sent to the browser.
+
+My question: Could you paste the part of your categories.ejs file that uses EJS syntax to display the categories, including any loop you use?
+
+USER:
+<% categories.forEach(category => { %>
+    <li class="rounded-xl bg-white p-6 text-center font-semibold text-slate-900 shadow-sm"><%= category.name %></li>
+<% }); %>
+
+ASSISTANT:
+Excellent, Emilio! 😊 You've connected all the pieces of your application, from PostgreSQL to the HTML displayed in the browser.
+Understanding your EJS template:
+1. <% ... %> — Execute JavaScript. This allows you to run JavaScript inside the template without directly printing its output. Your forEach() loop iterates through the categories retrieved from PostgreSQL.
+2. <%= ... %> — Display a value. This outputs the category name into the HTML, escaping special HTML characters by default.
+For example, if your database contains three categories, EJS generates three <li> elements.
+Your Tailwind CSS classes then control how those elements look.
+One important concept: EJS is a server-side template engine, even though the resulting HTML is displayed in the client's browser. The browser receives the generated HTML, not the original EJS code.
+
+My question: Why did you choose to use a forEach() loop in your EJS template instead of writing a separate HTML <li> element for every category?
+
+USER:
+becouse forEach() display all cateogories in one comand line, if I use separate <li> I must repeat innecesarie code
+
+ASSISTANT:
+Exactly, Emilio! 😊 That's a good explanation.
+Using forEach() makes your EJS template dynamic, reusable, and easier to maintain.
+Instead of writing an individual <li> for every category, your loop automatically generates one for each record returned by PostgreSQL.
+For example, if your database has 5 categories, the template generates 5 list items. If you later add 10 more categories, the same code works without modification.
+This demonstrates an important programming principle: DRY (Don't Repeat Yourself).
+
+Week 02 Coaching Session — Completed!
+We've successfully discussed all four required topics:
+1. Relational Database Design and SQL — Discussed
+2. Node.js Database Access — Discussed
+3. Express Routing — Discussed
+4. EJS Templates and Rendering — Discussed
+
+You shared actual code, explained your decisions, and demonstrated how information flows through your application:
+PostgreSQL → Node.js → Express → EJS → Browser
+
+Final feedback:
+You've demonstrated a good foundational understanding of your application's architecture.
+Some useful areas to keep improving are SQL JOIN queries, error handling in asynchronous Express routes, and secure PostgreSQL SSL configuration.
+There is no pass or fail. The purpose was to explore your implementation and strengthen your understanding, and we've accomplished that.
