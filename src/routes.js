@@ -10,7 +10,7 @@ import {
 } from "./controllers/projects.js";
 import {
   showCategoriesPage,
-  showCategoryDetails,
+  showCategoryDetailsPage,
 } from "./controllers/categories.js";
 import { testErrorPage } from "./controllers/errors.js";
 
@@ -21,7 +21,7 @@ router.get("/organization/:id", showOrganizationDetailsPage);
 router.get("/projects", showProjectsPage);
 router.get("/project/:id", showProjectDetailsPage);
 router.get("/categories", showCategoriesPage);
-router.get("/category/:id", showCategoryDetails);
+router.get("/category/:id", showCategoryDetailsPage);
 
 //error'handling routes
 router.get("/test-error", testErrorPage);
