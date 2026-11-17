@@ -1,6 +1,6 @@
 import db from "./db.js";
 
-const getAllCategoires = async () => {
+const getAllCategories = async () => {
   const query = `
         SELECT name
       FROM public.category;
@@ -11,4 +11,4 @@ const getAllCategoires = async () => {
   return result.rows;
 };
 
-export { getAllCategoires };
+export { getAllCategories };

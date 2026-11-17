@@ -10,6 +10,9 @@
       <img class="mb-4 h-24 w-auto object-contain" src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %>">
       <strong class="text-lg text-slate-900"><%= organization.name %></strong>
       <a class="text-teal-700 underline hover:text-teal-900" href="mailto:<%= organization.contact_email %>"><%= organization.contact_email %></a>
+      <a href="/organization/<%= organization.organization_id %>">
+        <%= organization.name %>
+      </a>
     </li>
 
     <% }); %>
