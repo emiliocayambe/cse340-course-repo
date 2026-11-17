@@ -1,23 +1,44 @@
 <%- include('partials/header') %>
-  <main>
-    <h1>
+  <main class="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
+    <h1 class="mb-6 text-3xl font-bold text-teal-900 sm:text-4xl">
       <%= title %>
     </h1>
 
-    <h2>
-      <%= projectDetails.title %>
-    </h2>
+    <section class="rounded-xl border-t-4 border-teal-700 bg-white p-6 shadow-sm">
+      <h2 class="mb-3 text-2xl font-semibold text-slate-900">
+        <%= projectDetails.title %>
+      </h2>
+      <p class="mb-6 leading-relaxed text-slate-700">
+        <%= projectDetails.description %>
+      </p>
 
-    <p>Description: <%= projectDetails.description %>
-    </p>
+      <dl class="grid gap-4 sm:grid-cols-3">
+        <div class="rounded-lg bg-slate-50 p-4">
+          <dt class="text-sm font-medium text-slate-500">Location</dt>
+          <dd class="text-slate-900">
+            <%= projectDetails.location %>
+          </dd>
+        </div>
+        <div class="rounded-lg bg-slate-50 p-4">
+          <dt class="text-sm font-medium text-slate-500">Date</dt>
+          <dd class="text-slate-900">
+            <%= new Date(projectDetails.date).toLocaleDateString() %>
+          </dd>
+        </div>
+        <div class="rounded-lg bg-slate-50 p-4">
+          <dt class="text-sm font-medium text-slate-500">Organization</dt>
+          <dd>
+            <a class="text-teal-700 underline hover:text-teal-900"
+              href="/organization/<%= projectDetails.organization_id %>">
+              <%= projectDetails.name %>
+            </a>
+          </dd>
+        </div>
+      </dl>
+    </section>
 
-    <h3>Service Projects</h3>
-    <ul>
-      <% organization.forEach(project=> { %>
-        <li><a href="/project/<%= organization.project_id %>">
-            <%= organization.title %>
-          </a></li>
-        <% }) %>
-    </ul>
+    <a href="/projects"
+      class="mt-8 inline-block rounded-lg bg-teal-700 px-5 py-3 font-semibold text-white hover:bg-teal-800">&larr; Back
+      to Projects</a>
   </main>
   <%- include('partials/footer') %>

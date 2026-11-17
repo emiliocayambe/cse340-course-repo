@@ -28,25 +28,6 @@ const getOrganizationDetails = async (organizationId) => {
 
   // Return the first row of the result set, or null if no rows are found
   return result.rows.length > 0 ? result.rows[0] : null;
-}; 
-
-const getOrganizationByProjectId = async (projectId) => {
-  const query = `
-        SELECT
-          project_id,
-          organization_id,
-          title,
-          description,
-          location,
-          date
-        FROM public.service_project
-        WHERE project_id = $1
-        ORDER BY date;
-      `;
-
-  const queryParams = [projectId];
-  const result = await db.query(query, queryParams);
-
-  return result.rows;
 };
-export { getAllOrganizations, getOrganizationDetails, getOrganizationByProjectId };
+
+export { getAllOrganizations, getOrganizationDetails };

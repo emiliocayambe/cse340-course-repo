@@ -49,6 +49,6 @@ const getProjectDetails = async (projectId) => {
   const queryParams = [projectId];
   const result = await db.query(query, queryParams);
 
-  return result.rows;
+  return result.rows.length > 0 ? result.rows[0] : null;
 };
 export { getAllProjects, getProjectsByOrganizationId, getProjectDetails };

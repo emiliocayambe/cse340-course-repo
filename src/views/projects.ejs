@@ -6,7 +6,9 @@
 
   <% projects.forEach(project => { %>
     <li class="rounded-xl border-t-4 border-teal-700 bg-white p-6 shadow-sm">
-      <h3 class="mb-2 text-lg font-semibold text-slate-900"><%= project.title %></h3>
+      <h3 class="mb-2 text-lg font-semibold"><a href="/project/<%= project.project_id %>">
+          <%= project.title %>
+        </a></h3>
       <p class="text-slate-700"><%= project.description %></p>
     </li>
   <% }); %>

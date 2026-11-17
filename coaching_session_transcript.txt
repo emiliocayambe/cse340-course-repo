@@ -1,0 +1,76 @@
+COACHING SESSION TRANSCRIPT - WEEK 01
+Student: Emilio
+Role: Learning Coach and Software Mentor
+
+---
+
+[AI]: Welcome, Emilio! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say 'I don't know' or 'I made a mistake.' That's the fastest way we'll learn today.
+
+To get us started on Topic 1: Express Routing, could you please paste a relevant Node.js function or routing snippet from your server.js file and briefly tell me what role it plays in your application?
+
+[Emilio]: In my server.js file, Express routing handles incoming HTTP requests from clients. For example, when a user navigates to the home route using a GET request (app.get('/', ...)), the server processes the request and uses res.render() to send back the appropriate EJS template and data.
+
+[AI]: That's a great summary of how Express routes map incoming requests to views and responses. 
+
+Could you paste the exact code snippet for one of your routes from your server.js file and walk me through why you chose that specific structure for it?
+
+[Emilio]: app.get("/projects", async (req, res) => {
+  const title = "Service Projects";
+  res.render("projects", { title });
+});
+
+[AI]: Thanks for sharing that route! Using an async function structure right off the bat keeps things flexible for when you eventually need to query a database. That covers our look at Express routing nicely.
+
+Let's move on to Topic 2: JavaScript Language Principles. Could you paste a relevant JavaScript function snippet from your project and explain what it does?
+
+[Emilio]: const calculateTotal = (price, tax = 0.12) => {
+    return price + (price * tax);
+};
+
+For JavaScript principles, I used modern ES6 features like arrow functions and default parameters. This makes the code cleaner and more concise. For instance, in this function, I calculate totals efficiently while keeping the code readable and maintainable.
+
+[AI]: Using arrow functions and default parameters is a clean, modern way to handle utility logic—plus defaulting to that tax rate is very practical! 
+
+That wraps up Topic 2 nicely. Let's move on to Topic 3: EJS Partials and Pages. Could you please paste a relevant EJS code snippet from your project (either a partial or a page) and explain why you chose to structure it that way?
+
+[Emilio]: <%- include('partials/header') %>
+<main>
+    <h1>Bienvenido a la página principal</h1>
+</main>
+<%- include('partials/footer') %>
+
+EJS allows me to modularize my views by separating repetitive HTML into partials, like headers and footers. I use the <%- include() %> syntax without escaping to render these partials dynamically into my main page templates, avoiding code duplication across the site.
+
+[AI]: That is a textbook example of why EJS partials are so useful for layout consistency and keeping your code DRY! 
+
+That successfully covers Topic 3. For our final area, Topic 4: Frontend CSS, could you paste a relevant CSS code snippet from your project and walk me through what it styles and why you chose that particular approach?
+
+[Emilio]: <header class="relative bg-teal-800 text-white shadow-md">
+  <nav class="mx-auto flex max-w-5xl flex-wrap items-center justify-between px-4 py-4" aria-label="Main navigation">
+    <a href="/" class="text-xl font-bold tracking-tight">CSE 340 Service Network</a>
+
+    <!-- Mobile: burger menu -->
+    <details class="group sm:hidden">
+      <summary class="cursor-pointer list-none rounded-md p-2 hover:bg-teal-700 [&::-webkit-details-marker]:hidden" aria-label="Toggle menu">
+        <svg class="h-6 w-6 group-open:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg class="hidden h-6 w-6 group-open:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </summary>
+      <ul class="absolute left-0 right-0 mt-4 flex flex-col bg-teal-800 px-4 pb-4 shadow-md">
+        <li><a href="/" class="block rounded-md px-3 py-2 hover:bg-teal-700">Home</a></li>
+        <li><a href="/organizations" class="block rounded-md px-3 py-2 hover:bg-teal-700">Organizations</a></li>
+        <li><a href="/projects" class="block rounded-md px-3 py-2 hover:bg-teal-700">Projects</a></li>
+        <li><a href="/categories" class="block rounded-md px-3 py-2 hover:bg-teal-700">Categories</a></li>
+      </ul>
+    </details>
+
+    <!-- Desktop: horizontal menu -->
+    <ul class="hidden gap-2 sm:flex">
+      <li><a href="/" class="rounded-md px-3 py-2 font-medium hover:bg-teal-700">Home</a></li>
+      <li><a href="/organizations" class="rounded-md px-3 py-2 font-medium hover:bg-teal-700">Organizations</a></li>
+      <li><a href="/projects" class="rounded-md px-3 py-2 font-medium hover:bg-teal-700">Projects</a></li>
+      <li><a href="/categories" class="rounded-md px-3 py-2 font-medium hover:bg-teal-700">Categories</a></li>
+    </ul>
+  </nav>
+</header>
+
+For the frontend styling, I decided to use Tailwind CSS instead of plain CSS. Tailwind allows me to build a responsive and modern user interface directly through utility classes in my EJS templates, which speeds up development and keeps the design consistent.

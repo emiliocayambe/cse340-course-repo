@@ -1,24 +1,42 @@
 <%- include('partials/header') %>
-  <main>
-    <h1>
+  <main class="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
+    <h1 class="mb-6 text-3xl font-bold text-teal-900 sm:text-4xl">
       <%= title %>
     </h1>
 
-    <h2>
-      <%= organizationDetails.name %>
-    </h2>
-    <img src="/images/<%= organizationDetails.logo_filename %>" alt="<%= organizationDetails.name %> logo">
+    <section
+      class="mb-10 flex flex-col items-center gap-6 rounded-xl bg-white p-6 shadow-sm sm:flex-row sm:items-start">
+      <img class="h-32 w-32 shrink-0 object-contain" src="/images/<%= organizationDetails.logo_filename %>"
+        alt="<%= organizationDetails.name %> logo">
+      <div class="text-center sm:text-left">
+        <h2 class="mb-2 text-2xl font-semibold text-slate-900">
+          <%= organizationDetails.name %>
+        </h2>
+        <p class="mb-3 leading-relaxed text-slate-700">
+          <%= organizationDetails.description %>
+        </p>
+        <a class="text-teal-700 underline hover:text-teal-900" href="mailto:<%= organizationDetails.contact_email %>">
+          <%= organizationDetails.contact_email %>
+        </a>
+      </div>
+    </section>
 
-    <p>Description: <%= organizationDetails.description %>
-    </p>
-
-    <h3>Service Projects</h3>
-    <ul>
-      <% projects.forEach(project=> { %>
-        <li><a href="/project/<%= project.project_id %>">
-            <%= project.title %>
-          </a></li>
-        <% }) %>
-    </ul>
+    <h3 class="mb-4 text-xl font-semibold text-slate-900">Service Projects</h3>
+    <% if (projects.length> 0) { %>
+      <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <% projects.forEach(project=> { %>
+          <li class="rounded-xl border-t-4 border-teal-700 bg-white p-6 shadow-sm">
+            <a class="text-lg font-semibold text-teal-800 hover:underline" href="/project/<%= project.project_id %>">
+              <%= project.title %>
+            </a>
+            <p class="mt-1 text-sm text-slate-600">
+              <%= project.location %> · <%= new Date(project.date).toLocaleDateString() %>
+            </p>
+          </li>
+          <% }) %>
+      </ul>
+      <% } else { %>
+        <p class="text-slate-600">This organization has no projects yet.</p>
+        <% } %>
   </main>
   <%- include('partials/footer') %>

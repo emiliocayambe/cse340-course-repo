@@ -1,5 +1,5 @@
 import { getAllProjects, getProjectDetails } from "../models/projects.js";
-import { getOrganizationByProjectId } from "../models/organizations.js";
+
 
 const showProjectsPage = async (req, res) => {
   const projects = await getAllProjects();
@@ -10,9 +10,7 @@ const showProjectsPage = async (req, res) => {
 const showProjectDetailsPage = async (req, res) => {
   const projectId = req.params.id;
   const projectDetails = await getProjectDetails(projectId);
-  const organization = await getOrganizationByProjectId(projectId);
   const title = "Project Details";
-
-  res.render("project", { title, projectDetails, organization });
+  res.render("project", { title, projectDetails });
 };
 export { showProjectsPage, showProjectDetailsPage };
