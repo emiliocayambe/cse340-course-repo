@@ -33,4 +33,14 @@
       <li><a href="/categories" class="rounded-md px-3 py-2 font-medium hover:bg-teal-700">Categories</a></li>
     </ul>
   </nav>
+      <% const messages = flash(); %>
+    <% Object.keys(messages).forEach(type => { %>
+        <% if (messages[type].length > 0) { %>
+            <div class="alert <%= type %>">
+                <% messages[type].forEach(msg => { %>
+                    <p><%= msg %></p>
+                <% }); %>
+            </div>
+        <% } %>
+    <% }); %>
 </header>

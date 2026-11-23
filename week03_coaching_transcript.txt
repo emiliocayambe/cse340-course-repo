@@ -1,0 +1,173 @@
+WEEK 03 COACHING SESSION — EMILIO
+Conversation transcript (Markdown simplified; HTML entities normalized)
+
+USER:
+Week 03 Coaching Session Prompt
+Role: supportive and non-judgmental Learning Coach and Software Mentor. This is a learning activity, not a test. Ask one question at a time. Cover Models, Views, Controllers, and Error Handling, with code samples for each. Save the conversation as a downloadable .txt transcript at the end.
+
+ASSISTANT:
+Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say 'I don't know' or 'I made a mistake.' That's the fastest way we'll learn today.
+I'll be your Learning Coach and Software Mentor for your Week 03 coaching session, Emilio! Just like our Week 01 session, this is a safe learning environment where we can explore your code, discuss your decisions, and learn from mistakes without judgment.
+We will cover Models, Views, Controllers, and Error Handling one topic at a time. At the end I'll prepare a downloadable .txt transcript.
+Question 1 — Could you paste a code snippet from one of your model files that shows a JavaScript function accepting a parameter and using it in an SQL query?
+
+USER:
+const getOrganizationDetails = async (organizationId) => {
+  const query = `
+    SELECT
+      organization_id,
+      name,
+      description,
+      contact_email,
+      logo_filename
+    FROM public.organization
+    WHERE organization_id = $1;
+  `;
+  const queryParams = [organizationId];
+  const result = await db.query(query, queryParams);
+  // Return the first row of the result set, or null if no rows are found
+  return result.rows.length > 0 ? result.rows[0] : null;
+};
+
+ASSISTANT:
+Great example, Emilio! This is a strong example of a Model function that interacts with a PostgreSQL database.
+The async function receives organizationId, selects columns from public.organization, filters using $1, passes [organizationId] to db.query, waits for the query, and returns the first row or null. Using a parameterized query helps prevent SQL injection by keeping values separate from SQL syntax.
+Question 2 — Why did you choose to use $1 and queryParams instead of inserting organizationId directly into the SQL query using a JavaScript template literal?
+
+USER:
+to prevent sql injection
+
+ASSISTANT:
+Exactly, Emilio! Using parameterized queries is one of the most important ways to prevent SQL injection. PostgreSQL treats organizationId as a data value rather than part of the SQL command.
+Question 3 — Why does your function return null when no organization is found, instead of returning an empty array or throwing an error?
+
+USER:
+I think if return empty I'll get an error
+
+ASSISTANT:
+Good thinking! Returning an empty array doesn't automatically cause an error, but it can cause unexpected behavior if the controller expects a single organization object. For example:
+const organization = await getOrganizationDetails(10);
+if (organization === null) {
+  return res.status(404).render("errors/404");
+}
+res.render("organization-details", { organization });
+Here null clearly indicates no matching organization; [] would not satisfy organization === null.
+Question 4 — What do you think would happen in your application if db.query() failed because the database connection was unavailable?
+
+USER:
+It must give me an error and I'll dont see eny view Page
+
+ASSISTANT:
+Good reasoning! When db.query() fails, its Promise rejects and await throws. The model stops executing normally, but with proper error handling Express can display a 500 error page instead of a blank page.
+Topic 2 — Views and EJS. A dynamic EJS link might look like:
+<a href="/organizations/<%= organization.organization_id %>"><%= organization.name %></a>
+Question 5 — Could you paste a relevant EJS code snippet from your Week 03 project that uses a variable to generate a dynamic link (href)?
+
+USER:
+of course:
+<a class="text-lg font-semibold text-teal-800 hover:underline" href="/project/<%= project.project_id %>">
+  <%= project.title %>
+</a>
+
+ASSISTANT:
+Great example! EJS inserts project.project_id into the URL, e.g. /project/15, and project.title into the link text. Tailwind classes make the link larger, semibold, teal, and underlined on hover. The view displays project information while controller and model obtain it.
+Question 6 — Why did you choose to use project.project_id in the link instead of creating a static URL such as /project/1?
+
+USER:
+because it let me handle a lot of links using forEach
+
+ASSISTANT:
+Exactly! With a loop, each project can have a unique link:
+<% projects.forEach(project => { %>
+  <a href="/project/<%= project.project_id %>"><%= project.title %></a>
+<% }) %>
+This avoids manually editing HTML when new projects are added.
+Topic 3 — Controllers. A route like router.get('/project/:projectId', controller.getProjectDetails) uses a URL parameter, accessible through req.params.projectId.
+Question 7 — Could you paste a route handler from your controller that uses a URL parameter, such as req.params.projectId or req.params.organizationId?
+
+USER:
+of course:
+const showProjectDetailsPage = async (req, res) => {
+  const projectId = req.params.id;
+  const projectDetails = await getProjectDetails(projectId);
+  const categories = await getCategoriesByProjectId(projectId);
+  const title = "Project Details";
+  res.render("project", { title, projectDetails, categories });
+};
+
+ASSISTANT:
+Great example! req.params.id reads the ID from a route such as /project/:id. The controller awaits getProjectDetails and getCategoriesByProjectId, then renders project with title, projectDetails, and categories. The queries are sequential, although independent queries could potentially run concurrently using Promise.all().
+Question 8 — Why did you choose to retrieve both projectDetails and categories in this controller before rendering the project.ejs page?
+
+USER:
+because I need show values that are in different tables
+
+ASSISTANT:
+Exactly! Your project details page needs information from different database tables, and each model function has a distinct responsibility. The controller coordinates data while the view presents it.
+Question 9 — How do you think your controller should handle a request for a project ID that doesn't exist, such as /project/99999?
+
+USER:
+I think I get an 500 error and it handling my middleware to render my error page
+
+ASSISTANT:
+Good thinking! Error middleware can display an error page, but a nonexistent project is normally 404 Not Found, while an unexpected server failure is 500 Internal Server Error. For example:
+const showProjectDetailsPage = async (req, res) => {
+  const projectId = req.params.id;
+  const projectDetails = await getProjectDetails(projectId);
+  if (!projectDetails) {
+    return res.status(404).render("404", { title: "Project Not Found" });
+  }
+  const categories = await getCategoriesByProjectId(projectId);
+  res.render("project", { title: "Project Details", projectDetails, categories });
+};
+Topic 4 — Error Handling.
+Question 10 — Could you paste the error-handling middleware or relevant code from your project that handles 404 or 500 errors?
+
+USER:
+// Global error handler
+app.use((err, req, res, next) => {
+  // Log error details for debugging
+  console.error("Error occurred:", err.message);
+  console.error("Stack trace:", err.stack);
+  // Determine status and template
+  const status = err.status || 500;
+  const template = status === 404 ? "404" : "500";
+  // Prepare data for the template
+  const context = {
+    title: status === 404 ? "Page Not Found" : "Server Error",
+    error: err.message,
+    stack: err.stack,
+  };
+  // Render the appropriate error template
+  res.status(status).render(`errors/${template}`, context);
+});
+
+ASSISTANT:
+Excellent! This is global Express error-handling middleware, identified by four parameters (err, req, res, next). It logs error details, uses err.status or 500, chooses a 404 or 500 template, prepares context, and renders an error response. Passing err.message and err.stack to EJS is helpful for development but can expose internal details in production. Missing URLs don't automatically reach error middleware without a separate 404 handler.
+Question 11 — Why did you decide to create separate 404.ejs and 500.ejs pages instead of displaying the same error message for every problem?
+
+USER:
+because I need know if the error is in my server or no found page or bad tiping error when I write the name
+
+ASSISTANT:
+Exactly! A 404 indicates a missing page or resource, potentially due to a mistyped URL. A 500 indicates an unexpected server problem. Separate error pages help users and developers distinguish these situations. A missing URL generally needs its own 404 handler after routes.
+Question 12 — Why do you think it might be dangerous to display err.stack directly on an error page that regular users can see?
+
+USER:
+Because any person can view my name functions or credentials if are exposed
+
+ASSISTANT:
+Exactly, Emilio! A stack trace can reveal function names, file paths, and code locations. It doesn't normally contain credentials, but sensitive information could be exposed if included in errors. A safer approach is to log details on the server and show generic production messages:
+const context = {
+  title: status === 404 ? "Page Not Found" : "Server Error",
+  error: process.env.NODE_ENV === "production"
+    ? "Something went wrong."
+    : err.message,
+  stack: process.env.NODE_ENV === "production"
+    ? null
+    : err.stack,
+};
+
+Week 03 Coaching Session — Completed!
+All four topics discussed: Models (SQL parameters and injection prevention), Views (dynamic EJS links and forEach), Controllers (route parameters and data from multiple tables), and Error Handling (404/500 middleware and stack trace security).
+Key areas to keep practicing: distinguishing 404 from 500 and handling rejected database queries safely. No pass or fail: this was a learning conversation.

@@ -35,7 +35,13 @@
           </dd>
         </div>
       </dl>
-      <h3 class="mt-6 mb-2 text-lg font-semibold text-slate-900">Categories</h3>
+      <div class="mt-6 mb-2 flex items-center justify-between">
+        <h3 class="text-lg font-semibold text-slate-900">Categories</h3>
+        <a href="/assign-categories/<%= projectDetails.project_id %>"
+          class="inline-flex items-center gap-1 rounded-lg border border-teal-700 px-3 py-1 text-sm font-semibold text-teal-800 hover:bg-teal-50">
+          ✎ Edit Categories
+        </a>
+      </div>
 <ul class="flex flex-wrap gap-2">
   <% categories.forEach(category => { %>
     <li><a class="rounded-full bg-teal-100 px-3 py-1 text-sm font-medium text-teal-800 hover:bg-teal-200" href="/category/<%= category.category_id %>"><%= category.name %></a></li>

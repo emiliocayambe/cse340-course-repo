@@ -3,7 +3,6 @@
     <h1 class="mb-6 text-3xl font-bold text-teal-900 sm:text-4xl">
       <%= title %>
     </h1>
-
     <section
       class="mb-10 flex flex-col items-center gap-6 rounded-xl bg-white p-6 shadow-sm sm:flex-row sm:items-start">
       <img class="h-32 w-32 shrink-0 object-contain" src="/images/<%= organizationDetails.logo_filename %>"
@@ -19,6 +18,8 @@
           <%= organizationDetails.contact_email %>
         </a>
       </div>
+      <p><a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a></p>
+
     </section>
 
     <h3 class="mb-4 text-xl font-semibold text-slate-900">Service Projects</h3>

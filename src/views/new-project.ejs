@@ -1,0 +1,50 @@
+<%- include('partials/header') %>
+<main class="mx-auto w-full max-w-xl flex-1 px-4 py-10">
+  <h1 class="mb-6 text-3xl font-bold text-teal-800"><%= title %></h1>
+
+  <form action="/new-project" method="POST"
+        class="space-y-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="flex flex-col gap-1">
+      <label for="title" class="font-semibold text-slate-800">Project Title</label>
+      <input type="text" id="title" name="title" maxlength="150" required
+             class="rounded-lg border border-slate-300 px-3 py-2 text-slate-800 focus:border-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-200" />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="description" class="font-semibold text-slate-800">Description</label>
+      <textarea id="description" name="description" maxlength="500" rows="4" required
+                class="rounded-lg border border-slate-300 px-3 py-2 text-slate-800 focus:border-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-200"></textarea>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="location" class="font-semibold text-slate-800">Location</label>
+      <input type="text" id="location" name="location" maxlength="255" required
+             class="rounded-lg border border-slate-300 px-3 py-2 text-slate-800 focus:border-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-200" />
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div class="flex flex-col gap-1">
+        <label for="date" class="font-semibold text-slate-800">Date</label>
+        <input type="date" id="date" name="date" required
+               class="rounded-lg border border-slate-300 px-3 py-2 text-slate-800 focus:border-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-200" />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="organizationId" class="font-semibold text-slate-800">Organization</label>
+        <select id="organizationId" name="organizationId" required
+                class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-800 focus:border-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-200">
+          <option value="">Select an organization</option>
+          <% organizations.forEach(org => { %>
+            <option value="<%= org.organization_id %>"><%= org.name %></option>
+          <% }); %>
+        </select>
+      </div>
+    </div>
+
+    <button type="submit"
+            class="w-full rounded-lg bg-teal-800 px-4 py-2 font-semibold text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-300 sm:w-auto">
+      Create Project
+    </button>
+  </form>
+</main>
+<%- include('partials/footer') %>

@@ -1,7 +1,13 @@
 <%- include('partials/header') %>
 <main class="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
   <h1 class="mb-2 text-3xl font-bold text-teal-900 sm:text-4xl"><%= title %></h1>
-  <h2 class="mb-8 text-xl text-slate-700">Upcoming Service Projects</h2>
+ <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+  <h2 class="text-xl text-slate-700">Upcoming Service Projects</h2>
+  <a href="/new-project"
+     class="inline-flex items-center justify-center rounded-lg bg-teal-800 px-4 py-2 font-semibold text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-300">
+    + Add a New Service Project
+  </a>
+</div>
   <ul class="grid gap-6 md:grid-cols-3">
 
   <% projects.forEach(project => { %>

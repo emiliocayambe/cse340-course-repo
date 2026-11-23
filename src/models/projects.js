@@ -72,9 +72,46 @@ const getProjectsByCategoryId = async (categoryId) => {
   return result.rows;
 };
 
+/**
+ * Creates a new project in the database.
+ * @param {string} title - The title of the project
+ * @param {string} description - A description of the project.
+ * @param {string} location - The location for the project.
+ * @param {string} date - The filename of the organization's logo.
+ * @param {string} organizationId - the organization ID
+ * @returns {string} The id of the newly created organization record.
+ */
+const createProject = async (
+  title,
+  description,
+  location,
+  date,
+  organizationId,
+) => {
+  const query = `
+      INSERT INTO service_project (title, description, location, date, organization_id)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING project_id
+    `;
+
+  const queryParams = [title, description, location, date, organizationId];
+  const result = await db.query(query, queryParams);
+
+  if (result.rows.length === 0) {
+    throw new Error("Failed to create project");
+  }
+
+  if (process.env.ENABLE_SQL_LOGGING === "true") {
+    console.log("Created new project with ID:", result.rows[0].project_id);
+  }
+
+  return result.rows[0].project_id;
+};
+
 export {
   getAllProjects,
   getProjectsByOrganizationId,
   getProjectDetails,
   getProjectsByCategoryId,
+  createProject,
 };
