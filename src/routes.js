@@ -23,7 +23,7 @@ import {
   showCategoryDetailsPage,
   showAssignCategoriesForm,
   processAssignCategoriesForm,
-  showNewCategotyForm,
+  showNewCategoryForm,
   categoryValidation,
   processNewCategoryForm,
   showEditCategoryForm,
@@ -75,7 +75,7 @@ router.get("/assign-categories/:projectId", showAssignCategoriesForm);
 router.post("/assign-categories/:projectId", processAssignCategoriesForm);
 
 // Route for new category page
-router.get("/new-category", showNewCategotyForm);
+router.get("/new-category", showNewCategoryForm);
 // Route to handle new category form submission
 router.post("/new-category", categoryValidation, processNewCategoryForm);
 // Route for show edit category form

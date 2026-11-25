@@ -149,4 +149,4 @@ vite.config.ts.timestamp-*
 .turbo
 
 # Local env files
-.DS_Store.DS_Store
+.DS_Store

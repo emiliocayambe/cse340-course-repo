@@ -46,7 +46,7 @@ const createOrganization = async (
   logoFilename,
 ) => {
   const query = `
-      INSERT INTO organization (title, description, contact_email, logo_filename)
+      INSERT INTO organization (name, description, contact_email, logo_filename)
       VALUES ($1, $2, $3, $4)
       RETURNING organization_id
     `;

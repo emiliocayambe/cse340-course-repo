@@ -19,7 +19,7 @@ const categoryValidation = [
     .trim()
     .notEmpty()
     .withMessage("name is required")
-    .isLength({ min: 3, max: 200 })
+    .isLength({ min: 3, max: 100 })
     .withMessage("name must be between 3 and 100 characters"),
 ];
 
@@ -69,7 +69,7 @@ const processAssignCategoriesForm = async (req, res) => {
   res.redirect(`/project/${projectId}`);
 };
 
-const showNewCategotyForm = async (req, res) => {
+const showNewCategoryForm = async (req, res) => {
   const title = "Add New Category";
 
   res.render("new-category", { title });
@@ -137,7 +137,7 @@ export {
   showCategoryDetailsPage,
   showAssignCategoriesForm,
   processAssignCategoriesForm,
-  showNewCategotyForm,
+  showNewCategoryForm,
   categoryValidation,
   processNewCategoryForm,
   showEditCategoryForm,
