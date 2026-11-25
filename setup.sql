@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS public.organization (
 CREATE TABLE IF NOT EXISTS public.service_project (
     project_id SERIAL,
     organization_id INTEGER NOT NULL,
-    title VARCHAR(150) NOT NULL,
+    title VARCHAR(200) NOT NULL,
     description TEXT NOT NULL,
-    location VARCHAR(255) NOT NULL,
+    location VARCHAR(200) NOT NULL,
     date DATE NOT NULL,
     CONSTRAINT service_project_pkey PRIMARY KEY (project_id),
     CONSTRAINT fk_organization 
